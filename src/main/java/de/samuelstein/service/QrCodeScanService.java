@@ -6,27 +6,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-
-import static java.util.Map.entry;
 
 @Slf4j
 @NoArgsConstructor
 public class QrCodeScanService {
-
-    public static final Map<String, String> KEYMAP = Map.ofEntries(
-            entry("ß", "-"),
-            entry("-", "/"),
-            entry("z", "y"),
-            entry("Z", "Y"),
-            entry("y", "z"),
-            entry("Y", "Z"),
-            entry("`", "+"),
-            entry("´", "="),
-            entry("È", "+E")
-    );
 
     private final Pattern ticketPattern = Pattern.compile("^[^{\\}]+$");
     private final Scanner scannerHID = new Scanner(System.in);
@@ -52,11 +37,6 @@ public class QrCodeScanService {
 
     private void notifyObservers(String input) {
         for (QrCodeScanListener listener : listeners) {
-//            var convertedInput = input.chars()
-//                    .mapToObj(c -> String.valueOf((char) c))
-//                    .map(k -> KEYMAP.getOrDefault(k, k))
-//                    .collect(Collectors.joining());
-//            listener.checkIn(convertedInput + "=");
             listener.checkIn(input);
         }
     }
